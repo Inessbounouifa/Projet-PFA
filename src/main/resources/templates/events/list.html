@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Liste des Événements</title>
+</head>
+<body>
+<h1>Liste des Événements</h1>
+
+<a th:href="@{/events/add}">Ajouter un événement</a>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>Titre</th>
+        <th>Description</th>
+        <th>Date</th>
+        <th>Image</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="event : ${events}">
+        <td th:text="${event.title}">Titre</td>
+        <td th:text="${event.description}">Description</td>
+        <td th:text="${event.date}">Date</td>
+        <td>
+            <img th:src="@{/images/{img}(img=${event.image})}" width="100" alt="image"/>
+        </td>
+        <td>
+            <a th:href="@{'/events/edit/' + ${event.id}}">Modifier</a> |
+            <a th:href="@{'/events/delete/' + ${event.id}}" onclick="return confirm('Supprimer ?')">Supprimer</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Formulaire Événement</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+
+<h1 th:text="${event.id != null} ? 'Modifier Événement' : 'Ajouter Événement'"></h1>
+
+<form th:action="@{/events/save}" th:object="${event}" method="post" enctype="multipart/form-data">
+    <input type="hidden" th:field="*{id}"/>
+
+    <label>Nom de l'événement:</label>
+    <input type="text" th:field="*{name}" required/><br/>
+
+    <label>Lieu (venue):</label>
+    <input type="text" th:field="*{venue}" required/><br/>
+
+    <label>Titre:</label>
+    <input type="text" th:field="*{title}" required/><br/>
+
+    <label>Description:</label>
+    <textarea th:field="*{description}" required></textarea><br/>
+
+    <label>Date et Heure:</label>
+    <input type="datetime-local" th:field="*{dateTime}" required/><br/>
+
+    <label>Nombre de billets disponibles:</label>
+    <input type="number" th:field="*{availableTickets}" min="0" required/><br/>
+
+    <label>Prix (en €):</label>
+    <input type="number" step="0.01" th:field="*{prix}" min="0"/><br/>
+
+    <label>Image:</label>
+    <input type="file" name="imageFile"/><br/>
+
+    <button type="submit">Enregistrer</button>
+</form>
+
+<a th:href="@{/events}">Retour à la liste</a>
+
+</body>
+</html>

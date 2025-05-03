@@ -4,14 +4,13 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-import javax.management.relation.Role;
-
-@Entity @NoArgsConstructor @AllArgsConstructor @Setter @Getter
+@Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
+@Builder
 public class User {
 
     @Id
@@ -29,7 +28,5 @@ public class User {
     @NotNull
     private String password;
 
-
-    private String Role;
-
+    private String role;
 }
