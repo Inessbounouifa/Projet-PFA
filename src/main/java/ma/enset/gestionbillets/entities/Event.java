@@ -31,6 +31,8 @@ public class Event {
 
     private LocalDateTime dateTime; // Date et heure de l'événement
 
+    private String formattedDate;
+
     @NotNull
     private int availableTickets;
     // Nombre de billets disponibles
@@ -58,4 +60,13 @@ public class Event {
     public String getDate() {
         return null;
     }
+
+    public String getFormattedDate() {
+        return formattedDate;
+    }
+
+    public void setFormattedDate(String formattedDate) {
+        this.formattedDate = formattedDate;
+    }
 }
+

@@ -1,38 +1,129 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
     <title>Liste des Événements</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .event-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .event-card {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            width: 300px;
+            overflow: hidden;
+            transition: transform 0.2s;
+        }
+        .event-card:hover {
+            transform: translateY(-5px);
+        }
+        .event-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+        .event-content {
+            padding: 15px;
+        }
+        .event-title {
+            font-size: 1.2em;
+            margin: 0 0 10px 0;
+            color: #007BFF;
+        }
+        .event-description {
+            font-size: 0.95em;
+            color: #555;
+            margin-bottom: 10px;
+        }
+        .event-details {
+            font-size: 0.9em;
+            color: #777;
+            margin-bottom: 5px;
+        }
+        .event-actions {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 15px 15px 15px;
+        }
+        .event-actions a {
+            text-decoration: none;
+            color: #fff;
+            background-color: #28a745;
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            transition: background-color 0.2s;
+        }
+        .event-actions a:hover {
+            background-color: #218838;
+        }
+        .add-event {
+            display: block;
+            width: 200px;
+            margin: 0 auto 30px auto;
+            text-align: center;
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px 0;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+        .add-event:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
+
 <h1>Liste des Événements</h1>
 
-<a th:href="@{/events/add}">Ajouter un événement</a>
+<a class="add-event" th:href="@{/events/add}">Ajouter un événement</a>
 
-<table border="1">
-    <thead>
-    <tr>
-        <th>Titre</th>
-        <th>Description</th>
-        <th>Date</th>
-        <th>Image</th>
-        <th>Actions</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="event : ${events}">
-        <td th:text="${event.title}">Titre</td>
-        <td th:text="${event.description}">Description</td>
-        <td th:text="${event.date}">Date</td>
-        <td>
-            <img th:src="@{/images/{img}(img=${event.image})}" width="100" alt="image"/>
-        </td>
-        <td>
-            <a th:href="@{'/events/edit/' + ${event.id}}">Modifier</a> |
-            <a th:href="@{'/events/delete/' + ${event.id}}" onclick="return confirm('Supprimer ?')">Supprimer</a>
-        </td>
-    </tr>
-    </tbody>
-</table>
+<div class="event-grid">
+    <div class="event-card" th:each="event : ${events}">
+        <!-- Affichage de l'image de l'événement ou de l'image par défaut -->
+        <img class="event-image"
+             th:src="@{'/images/' + ${#strings.defaultString(event.image, 'default.png')}}"
+             alt="Image de l'événement"/>
+
+        <div class="event-content">
+            <h2 class="event-title" th:text="${event.title}">Titre de l'événement</h2>
+            <p class="event-description" th:text="${event.description}">Description</p>
+            <p class="event-details">
+                <strong>Date:</strong>
+                <span th:text="${#temporals.format(event.dateTime, 'dd/MM/yyyy HH:mm')}">Date</span>
+
+            </p>
+            <p class="event-details">
+                <strong>Lieu:</strong> <span th:text="${event.venue}">Lieu</span>
+            </p>
+            <p class="event-details">
+                <strong>Prix:</strong> <span th:text="${event.prix}">Prix</span> MAD
+            </p>
+        </div>
+        <div class="event-actions">
+            <a th:href="@{'/events/edit/' + ${event.id}}">Modifier</a>
+            <a th:href="@{'/events/delete/' + ${event.id}}" onclick="return confirm('Supprimer cet événement ?')">Supprimer</a>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>
