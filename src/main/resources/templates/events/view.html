@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><title>Panier</title></head>
+<body>
+
+<h1>Mon Panier</h1>
+
+<div th:if="${#lists.isEmpty(cart)}">
+    <p>Votre panier est vide.</p>
+</div>
+
+<div th:each="item, iterStat : ${cart}">
+    <hr/>
+    <h2 th:text="${item[0].title}">Titre</h2>
+    <p th:text="${item[0].description}">Description</p>
+    <p><strong>Prix:</strong> <span th:text="${item[0].prix}"></span> MAD</p>
+    <p><strong>Quantité:</strong> <span th:text="${item[1]}"></span></p>
+
+    <!-- 🔘 Bouton supprimer -->
+    <form th:action="@{'/cart/remove/' + ${iterStat.index}}" method="get" style="display:inline;">
+        <button type="submit" style="color: red; border: none; background: none; font-size: 18px;">🗑 Supprimer</button>
+    </form>
+</div>
+
+
+
+<a th:href="@{/}">← Continuer les achats</a>
+</body>
+</html>

@@ -19,7 +19,7 @@ public class User {
 
     @NotNull
     @Size(min = 2, max = 100)
-    private String name;
+    private String username;
 
     @NotNull
     @Email

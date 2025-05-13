@@ -42,6 +42,7 @@ public class Event {
     private String image;
     private String title;         // <== ce champ est requis
     private String description;
+    int placesDisponibles;
 
 
     // Méthode pour réserver un billet et décrémenter le nombre de billets disponibles

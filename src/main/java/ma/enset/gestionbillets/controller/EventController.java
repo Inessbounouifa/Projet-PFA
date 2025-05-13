@@ -54,27 +54,41 @@ public class EventController {
     }
 
     // 🔹 Sauvegarder un événement avec image
+    // 🔹 Sauvegarder un événement avec image
     @PostMapping("/save")
     public String saveEvent(@ModelAttribute("event") Event event,
                             @RequestParam("imageFile") MultipartFile imageFile) throws IOException {
 
         if (!imageFile.isEmpty()) {
-            String uploadDir = "src/main/resources/static/images/";
+            // Changer le répertoire pour un emplacement approprié
+            String uploadDir = "C:/path/to/your/project/images/"; // Exemple : mettre à jour avec un chemin valide
             String filename = UUID.randomUUID() + "_" + imageFile.getOriginalFilename();
             Path uploadPath = Paths.get(uploadDir);
 
+            // Vérifie si le répertoire existe, sinon crée-le
             if (!Files.exists(uploadPath)) {
                 Files.createDirectories(uploadPath);
             }
 
             try (InputStream inputStream = imageFile.getInputStream()) {
+                // Copier l'image dans le répertoire
                 Files.copy(inputStream, uploadPath.resolve(filename), StandardCopyOption.REPLACE_EXISTING);
-                event.setImage(filename);
+                event.setImage(filename); // Sauvegarder le nom du fichier dans l'entité Event
             }
         }
 
-        eventRepository.save(event);
-        return "redirect:/events";
+        eventRepository.save(event); // Sauvegarder l'événement dans la base de données
+        return "redirect:/events"; // Redirection après la sauvegarde
     }
+    // 🔹 Détails d’un événement (page publique)
+    @GetMapping("/view/{id}")
+    public String viewEvent(@PathVariable Long id, Model model) {
+        Event event = eventRepository.findById(id).orElseThrow();
+        model.addAttribute("event", event);
+        return "events/details";
+// Va chercher templates/events/event-details.html
+    }
+
+
 
 }
