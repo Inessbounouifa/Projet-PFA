@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Paiement</title>
+</head>
+<body>
+
+<h1>Paiement</h1>
+
+<p><strong>Total :</strong> <span th:text="${total}">0</span> MAD</p>
+
+<form th:action="@{/payment/confirm}" method="post">
+    <label>Nom complet :</label>
+    <input type="text" name="name" required><br><br>
+
+    <label>Mode de paiement :</label>
+    <select name="method" required>
+        <option value="Visa">Carte Visa</option>
+        <option value="PayPal">PayPal</option>
+        <option value="CMI">CMI</option>
+    </select><br><br>
+
+    <button type="submit">Payer</button>
+</form>
+
+<a th:href="@{/cart/view}">← Retour au panier</a>
+
+</body>
+</html>
