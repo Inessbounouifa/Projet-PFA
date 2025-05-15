@@ -8,11 +8,14 @@
 
 <h1>Paiement</h1>
 
-<p><strong>Total :</strong> <span th:text="${total}">0</span> MAD</p>
+<p><strong>Total :</strong> <span th:text="${total}"></span> MAD</p>
 
 <form th:action="@{/payment/confirm}" method="post">
     <label>Nom complet :</label>
     <input type="text" name="name" required><br><br>
+
+    <label>Adresse e-mail :</label>
+    <input type="email" name="email" required><br><br>
 
     <label>Mode de paiement :</label>
     <select name="method" required>

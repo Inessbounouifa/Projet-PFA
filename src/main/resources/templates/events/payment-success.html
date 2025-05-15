@@ -9,6 +9,9 @@
 <h1 th:text="${message}">Paiement confirmé</h1>
 
 <a th:href="@{/}">← Retour à l'accueil</a>
+<p>
+    📥 <a th:href="@{'/pdfs/' + ${pdfFileName}}" target="_blank">Télécharger votre billet PDF</a>
+</p>
 
 </body>
 </html>
