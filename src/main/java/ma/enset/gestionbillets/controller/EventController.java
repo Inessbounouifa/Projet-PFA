@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.*;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -60,26 +61,24 @@ public class EventController {
                             @RequestParam("imageFile") MultipartFile imageFile) throws IOException {
 
         if (!imageFile.isEmpty()) {
-            // Changer le répertoire pour un emplacement approprié
-            String uploadDir = "C:/path/to/your/project/images/"; // Exemple : mettre à jour avec un chemin valide
+            String uploadDir = "src/main/resources/static/images/";
             String filename = UUID.randomUUID() + "_" + imageFile.getOriginalFilename();
             Path uploadPath = Paths.get(uploadDir);
 
-            // Vérifie si le répertoire existe, sinon crée-le
             if (!Files.exists(uploadPath)) {
                 Files.createDirectories(uploadPath);
             }
 
             try (InputStream inputStream = imageFile.getInputStream()) {
-                // Copier l'image dans le répertoire
                 Files.copy(inputStream, uploadPath.resolve(filename), StandardCopyOption.REPLACE_EXISTING);
-                event.setImage(filename); // Sauvegarder le nom du fichier dans l'entité Event
+                event.setImage(filename);
             }
         }
 
-        eventRepository.save(event); // Sauvegarder l'événement dans la base de données
-        return "redirect:/events"; // Redirection après la sauvegarde
+        eventRepository.save(event);
+        return "redirect:/events";
     }
+
     // 🔹 Détails d’un événement (page publique)
     @GetMapping("/view/{id}")
     public String viewEvent(@PathVariable Long id, Model model) {
@@ -88,6 +87,22 @@ public class EventController {
         return "events/details";
 // Va chercher templates/events/event-details.html
     }
+    @GetMapping("/public")
+    public String afficherEvenementsPublic(Model model) {
+        List<Event> events = eventRepository.findAll();
+        model.addAttribute("events", events);
+        return "events/liste_public"; // car le fichier est dans templates/events/
+    }
+
+    @GetMapping("/search")
+    public String searchEvents(@RequestParam("keyword") String keyword, Model model) {
+        List<Event> results = eventRepository.findByTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCase(keyword, keyword);
+        model.addAttribute("events", results);
+        model.addAttribute("keyword", keyword);
+        return "events/liste_public"; // Affiche la même page avec les résultats
+    }
+
+
 
 
 
