@@ -1,13 +1,13 @@
 package ma.enset.gestionbillets.controller;
 
+import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import ma.enset.gestionbillets.entities.Event;
-import ma.enset.gestionbillets.entities.QrCodeGenerator;
 import ma.enset.gestionbillets.entities.PdfTicketGenerator;
+import ma.enset.gestionbillets.entities.QrCodeGenerator;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import jakarta.mail.internet.MimeMessage;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,10 +18,9 @@ import java.util.UUID;
 
 @Controller
 @AllArgsConstructor
-@RequestMapping("/payment")
+@RequestMapping("/payment") // accessible aux users connectés
 public class PaymentController {
 
-    // Injection de JavaMailSender pour l'envoi des emails
     private final JavaMailSender mailSender;
 
     @GetMapping
@@ -41,7 +40,7 @@ public class PaymentController {
 
     @PostMapping("/confirm")
     public String processPayment(@RequestParam String name,
-                                 @RequestParam String email, // Ajout du champ email
+                                 @RequestParam String email,
                                  @RequestParam String method,
                                  HttpSession session,
                                  Model model) {
@@ -55,51 +54,39 @@ public class PaymentController {
                 int quantity = (int) item[1];
 
                 try {
-                    // 1. Génération QR Code
                     String qrContent = "TICKET-" + name + "-" + event.getId() + "-" + UUID.randomUUID();
                     String fileName = "qr-" + event.getId() + "-" + name + ".png";
                     String filePath = "C:/temp/" + fileName;
 
                     QrCodeGenerator.generateQrCodeToFile(qrContent, filePath);
-                    System.out.println("✅ QR Code généré : " + filePath);
 
-                    // 2. Génération du billet PDF
                     String pdfFileName = "billet-" + event.getId() + "-" + name + ".pdf";
                     String pdfFilePath = "C:/temp/" + pdfFileName;
 
                     PdfTicketGenerator.generateTicket(
-                            pdfFilePath,
-                            name,
-                            filePath,
-                            event.getTitle(),
-                            event.getVenue(),
-                            event.getDateTime().toString()
+                            pdfFilePath, name, filePath,
+                            event.getTitle(), event.getVenue(), event.getDateTime().toString()
                     );
-                    System.out.println("✅ Billet PDF généré : " + pdfFilePath);
 
-                    // 3. Envoi de l’e-mail avec le billet PDF en pièce jointe
                     MimeMessage message = mailSender.createMimeMessage();
                     MimeMessageHelper helper = new MimeMessageHelper(message, true);
                     helper.setTo(email);
                     helper.setSubject("🎫 Votre billet pour " + event.getTitle());
-                    helper.setText("Bonjour " + name + ",\n\nVoici votre billet pour l'événement \"" + event.getTitle() + "\".\nVeuillez trouver votre billet ci-joint.\n\nMerci pour votre achat !");
+                    helper.setText("Bonjour " + name + ",\n\nVoici votre billet pour l'événement.");
                     helper.addAttachment(pdfFileName, new File(pdfFilePath));
                     mailSender.send(message);
-                    System.out.println("📧 Email envoyé à : " + email);
 
                     lastPdfFileName = pdfFileName;
 
                 } catch (Exception e) {
-                    e.printStackTrace();
                     model.addAttribute("message", "Erreur pendant la génération ou l'envoi du billet.");
                     return "events/payment-error";
                 }
             }
 
             session.removeAttribute("cart");
-
             model.addAttribute("message", "Paiement réussi via " + method + ", merci " + name + " !");
-            model.addAttribute("pdfFileName", lastPdfFileName); // Lien ou iframe pour le PDF
+            model.addAttribute("pdfFileName", lastPdfFileName);
             return "events/payment-success";
 
         } else {

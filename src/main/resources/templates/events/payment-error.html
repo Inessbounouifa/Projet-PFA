@@ -1,9 +1,106 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head><meta charset="UTF-8"><title>Erreur Paiement</title></head>
+<head>
+    <meta charset="UTF-8">
+    <title>Erreur Paiement</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffebee;
+            padding-top: 100px;
+            color: #c62828;
+            text-align: center;
+        }
+
+        .navbar {
+            background-color: #f8bbd0;
+            padding: 15px 30px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 999;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .navbar-container {
+            max-width: 1200px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #880e4f;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-links li a {
+            color: #6a1b3f;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .nav-links li a:hover {
+            color: #ad1457;
+        }
+
+        h1 {
+            color: #c62828;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            color: #b71c1c;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        p {
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
 <body>
+
+<nav class="navbar">
+    <div class="navbar-container">
+        <a href="/" class="logo">🎟 Billetterie</a>
+        <ul class="nav-links">
+            <li><a href="/">Accueil</a></li>
+            <li><a th:href="@{/events/public}">Événements</a></li>
+            <li th:if="${#authorization.expression('isAuthenticated()')}">
+                <form th:action="@{/logout}" method="post" style="display:inline;">
+                    <button type="submit"
+                            style="background: none; border: none; font: inherit; color: #6a1b3f; cursor: pointer;">
+                        Déconnexion
+                    </button>
+                </form>
+            </li>
+
+        </ul>
+    </div>
+</nav>
+
 <h1>Erreur pendant le traitement du paiement</h1>
-<p th:text="${message}"></p>
+<p th:text="${message}">Une erreur est survenue. Veuillez réessayer.</p>
+
 <a th:href="@{/}">← Retour à l'accueil</a>
+
 </body>
 </html>

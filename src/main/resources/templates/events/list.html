@@ -6,21 +6,86 @@
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f9f9f9;
+            background-color: #fff0f5;
             margin: 0;
-            padding: 20px;
+            padding-top: 100px;
         }
+
+        .navbar {
+            background-color: #f8bbd0;
+            padding: 15px 30px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 999;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .navbar-container {
+            max-width: 1200px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #880e4f;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-links li a {
+            color: #6a1b3f;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links li a:hover {
+            color: #ad1457;
+        }
+
         h1 {
             text-align: center;
-            color: #333;
+            color: #8b1c47;
         }
+
+        .add-event {
+            display: block;
+            width: 220px;
+            margin: 20px auto;
+            text-align: center;
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+
+        .add-event:hover {
+            background-color: #0056b3;
+        }
+
         .event-grid {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
             gap: 20px;
-            margin-top: 30px;
+            padding: 0 20px 40px;
         }
+
         .event-card {
             background-color: #fff;
             border-radius: 10px;
@@ -29,100 +94,109 @@
             overflow: hidden;
             transition: transform 0.2s;
         }
+
         .event-card:hover {
             transform: translateY(-5px);
         }
+
         .event-image {
             width: 100%;
             height: 180px;
             object-fit: cover;
         }
+
         .event-content {
             padding: 15px;
         }
+
         .event-title {
             font-size: 1.2em;
             margin: 0 0 10px 0;
-            color: #007BFF;
+            color: #c2185b;
         }
+
         .event-description {
             font-size: 0.95em;
             color: #555;
             margin-bottom: 10px;
         }
+
         .event-details {
             font-size: 0.9em;
             color: #777;
             margin-bottom: 5px;
         }
+
         .event-actions {
             display: flex;
             justify-content: space-between;
             padding: 0 15px 15px 15px;
         }
+
         .event-actions a {
             text-decoration: none;
             color: #fff;
-            background-color: #28a745;
             padding: 8px 12px;
             border-radius: 5px;
             font-size: 0.9em;
-            transition: background-color 0.2s;
         }
-        .event-actions a:hover {
+
+        .btn-modifier {
+            background-color: #28a745;
+        }
+
+        .btn-modifier:hover {
             background-color: #218838;
         }
-        .add-event {
-            display: block;
-            width: 200px;
-            margin: 0 auto 30px auto;
-            text-align: center;
-            background-color: #007BFF;
-            color: #fff;
-            padding: 10px 0;
-            border-radius: 5px;
-            text-decoration: none;
-            font-weight: bold;
-            transition: background-color 0.2s;
-        }
-        .add-event:hover {
-            background-color: #0056b3;
-        }
-        .reserve-ticket {
-            text-decoration: none;
-            background-color: #ffc107;
-            color: #fff;
-            padding: 8px 12px;
-            border-radius: 5px;
-            font-size: 0.9em;
-            transition: background-color 0.2s;
+
+        .btn-supprimer {
+            background-color: #dc3545;
         }
 
-        .reserve-ticket:hover {
-            background-color: #e0a800;
+        .btn-supprimer:hover {
+            background-color: #c82333;
         }
-
     </style>
 </head>
 <body>
 
+<!-- ✅ Navbar admin -->
+<nav class="navbar">
+    <div class="navbar-container">
+        <a href="/" class="logo">🎟 Billetterie</a>
+        <ul class="nav-links">
+            <li><a href="/">Accueil</a></li>
+            <li><a th:href="@{/events/public}">Événements</a></li>
+            <li><a th:href="@{/events/admin}">Admin</a></li>
+            <li th:if="${#authorization.expression('isAuthenticated()')}">
+                <form th:action="@{/logout}" method="post" style="display:inline;">
+                    <button type="submit"
+                            style="background: none; border: none; font: inherit; color: #6a1b3f; cursor: pointer;">
+                        Déconnexion
+                    </button>
+                </form>
+            </li>
+
+        </ul>
+    </div>
+</nav>
+
 <h1>Liste des Événements</h1>
+
 <div th:if="${success}" style="text-align:center; margin-bottom:20px; color:green; font-weight:bold;">
     <p th:text="${success}"></p>
 </div>
 
-
-<a class="add-event" th:href="@{/events/add}">Ajouter un événement</a>
+<a class="add-event" th:href="@{/events/admin/add}">Ajouter un événement</a>
 
 <div class="event-grid">
     <div class="event-card" th:each="event : ${events}">
-        <!-- Affichage de l'image de l'événement ou de l'image par défaut -->
         <img class="event-image"
              th:src="@{'/images/' + ${#strings.defaultString(event.image, 'default.png')}}"
              alt="Image de l'événement"/>
 
         <div class="event-content">
-            <h2 class="event-title" th:text="${event.title}">Titre de l'événement</h2>
+            <h2 class="event-title" th:text="${event.title}">Titre</h2>
             <p class="event-description" th:text="${event.description}">Description</p>
             <p class="event-details">
                 <strong>Date:</strong>
@@ -136,11 +210,9 @@
             </p>
         </div>
         <div class="event-actions">
-            <a th:href="@{'/events/edit/' + ${event.id}}">Modifier</a>
-            <a th:href="@{'/events/delete/' + ${event.id}}" onclick="return confirm('Supprimer cet événement ?')">Supprimer</a>
-
-
-
+            <a th:href="@{'/events/admin/edit/' + ${event.id}}" class="btn-modifier">Modifier</a>
+            <a th:href="@{'/events/admin/delete/' + ${event.id}}" class="btn-supprimer"
+               onclick="return confirm('Supprimer cet événement ?')">Supprimer</a>
         </div>
     </div>
 </div>

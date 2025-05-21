@@ -8,7 +8,7 @@
             font-family: Arial, sans-serif;
             background-color: #fff0f5;
             padding: 40px;
-            padding-top: 100px; /* espace pour la navbar */
+            padding-top: 100px;
         }
 
         .navbar {
@@ -95,19 +95,30 @@
 </head>
 <body>
 
-<!-- ✅ Navbar ajoutée -->
+<!-- ✅ Navbar dynamique -->
 <nav class="navbar">
     <div class="navbar-container">
-        <a href="/" class="logo">🎟️ Billetterie</a>
+        <a href="/" class="logo">🎟 GestionBillets</a>
         <ul class="nav-links">
+            <!-- Accueil visible pour tous -->
             <li><a href="/">Accueil</a></li>
-            <li><a href="/events/public">Événements</a></li>
-            <li><a href="/login">Connexion</a></li>
-            <li><a href="/admin">Admin</a></li>
+
+            <!-- Événements visibles pour tous -->
+            <li><a th:href="@{/events/public}">Événements</a></li>
+
+            <!-- Panier uniquement pour les utilisateurs connectés simples -->
+            <li th:if="${#authorization.expression('hasRole(''USER'') and !hasRole(''ADMIN'')')}">
+                <a th:href="@{/cart/view}">Panier</a>
+            </li>
+
+            <!-- Déconnexion visible uniquement si connecté -->
+            <li th:if="${#authorization.expression('isAuthenticated()')}">
+                <a th:href="@{/logout}">Déconnexion</a>
+            </li>
         </ul>
     </div>
 </nav>
-<h2 th:if="${keyword}" th:text="'Résultats pour : ' + ${keyword}"></h2>
+
 
 <h1>Événements à venir</h1>
 
@@ -116,7 +127,15 @@
     <div class="event-content">
         <h2 th:text="${event.title}">Titre</h2>
         <p th:text="${event.description}">Description</p>
-        <a th:href="@{'/events/view/' + ${event.id}}" class="btn">Voir Détails</a>
+        <!-- Lien "Voir Détails" dynamique selon le rôle -->
+        <!-- 👤 USER -->
+        <a th:if="${#authorization.expression('hasRole(''USER'') and !hasRole(''ADMIN'')')}"
+           th:href="@{'/events/view/' + ${event.id}}" class="btn">Voir Détails</a>
+
+        <!-- 🛠 ADMIN -->
+        <a th:if="${#authorization.expression('hasRole(''ADMIN'')')}"
+           th:href="@{'/events/admin/view/' + ${event.id}}" class="btn">Voir Détails</a>
+
     </div>
 </div>
 

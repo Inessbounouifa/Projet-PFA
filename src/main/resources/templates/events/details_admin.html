@@ -200,9 +200,16 @@
             <li><a href="/">Accueil</a></li>
             <li><a th:href="@{/events/public}">Événements</a></li>
             <li th:if="${not #authorization.expression('isAuthenticated()')}"><a th:href="@{/login}">Connexion</a></li>
-            <li th:if="${#authorization.expression('hasRole(''USER'')')}"><a th:href="@{/cart/view}">Panier</a></li>
             <li th:if="${#authorization.expression('hasRole(''ADMIN'')')}"><a th:href="@{/events/admin}">Admin</a></li>
-            <li th:if="${#authorization.expression('isAuthenticated()')}"><a th:href="@{/logout}">Déconnexion</a></li>
+            <li th:if="${#authorization.expression('isAuthenticated()')}">
+                <form th:action="@{/logout}" method="post" style="display:inline;">
+                    <button type="submit"
+                            style="background: none; border: none; font: inherit; color: #6a1b3f; cursor: pointer;">
+                        Déconnexion
+                    </button>
+                </form>
+            </li>
+
         </ul>
     </div>
 </nav>
@@ -230,48 +237,12 @@
         </div>
     </div>
 
-    <!-- ✅ Si l'utilisateur est connecté, affiche bouton "Acheter" -->
-    <div th:if="${#authorization.expression('hasRole(''USER'')')}">
-        <button class="main-button" onclick="openModal()">Acheter</button>
-    </div>
+
 
     <a th:href="@{/}" class="return-link">← Retour à l'accueil</a>
 </div>
 
-<!-- ✅ Modal quantité -->
-<div id="quantityModal" class="modal">
-    <div class="modal-content">
-        <h3 style="color:#c2185b;">Choisir la quantité</h3>
-        <div class="quantity-controls">
-            <button onclick="changeQuantity(-1)">-</button>
-            <span id="quantityDisplay">1</span>
-            <button onclick="changeQuantity(1)">+</button>
-        </div>
-        <form id="cartForm" th:action="@{'/cart/add/' + ${event.id}}" method="post">
-            <input type="hidden" name="quantity" id="quantityInput" value="1"/>
-            <button type="submit">Ajouter au panier</button>
-        </form>
-        <br/>
-        <button onclick="closeModal()">Annuler</button>
-    </div>
-</div>
 
-<script>
-    function openModal() {
-        document.getElementById('quantityModal').style.display = 'block';
-    }
-
-    function closeModal() {
-        document.getElementById('quantityModal').style.display = 'none';
-    }
-
-    function changeQuantity(change) {
-        let quantity = parseInt(document.getElementById('quantityDisplay').textContent);
-        quantity = Math.max(1, quantity + change);
-        document.getElementById('quantityDisplay').textContent = quantity;
-        document.getElementById('quantityInput').value = quantity;
-    }
-</script>
 
 </body>
 </html>

@@ -3,15 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <title>Paiement Réussi</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e8f5e9;
+            padding-top: 100px;
+            color: #2e7d32;
+            text-align: center;
+        }
+
+        .navbar {
+            background-color: #f8bbd0;
+            padding: 15px 30px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 999;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .navbar-container {
+            max-width: 1200px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #880e4f;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-links li a {
+            color: #6a1b3f;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .nav-links li a:hover {
+            color: #ad1457;
+        }
+
+        h1 {
+            color: #2e7d32;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            color: #388e3c;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .pdf-link {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #4caf50;
+            color: white;
+            border-radius: 20px;
+            text-decoration: none;
+        }
+
+        .pdf-link:hover {
+            background-color: #388e3c;
+        }
+    </style>
 </head>
 <body>
 
+<nav class="navbar">
+    <div class="navbar-container">
+        <a href="/" class="logo">🎟 Billetterie</a>
+        <ul class="nav-links">
+            <li><a href="/">Accueil</a></li>
+            <li><a th:href="@{/events/public}">Événements</a></li>
+            <li th:if="${#authorization.expression('isAuthenticated()')}">
+                <form th:action="@{/logout}" method="post" style="display:inline;">
+                    <button type="submit"
+                            style="background: none; border: none; font: inherit; color: #6a1b3f; cursor: pointer;">
+                        Déconnexion
+                    </button>
+                </form>
+            </li>
+
+        </ul>
+    </div>
+</nav>
+
 <h1 th:text="${message}">Paiement confirmé</h1>
 
+<p>📥 <a class="pdf-link" th:href="@{'/pdfs/' + ${pdfFileName}}" target="_blank">Télécharger votre billet PDF</a></p>
+
 <a th:href="@{/}">← Retour à l'accueil</a>
-<p>
-    📥 <a th:href="@{'/pdfs/' + ${pdfFileName}}" target="_blank">Télécharger votre billet PDF</a>
-</p>
 
 </body>
 </html>

@@ -11,51 +11,41 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.*;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @Controller
 @AllArgsConstructor
-@RequestMapping("/events")
+@RequestMapping("/events/admin") // restreint aux ADMIN dans SecurityConfig
 public class EventController {
 
     private final EventRepository eventRepository;
 
-    // 🔹 Afficher la liste des événements
     @GetMapping
     public String getAllEvents(Model model) {
         model.addAttribute("events", eventRepository.findAll());
-        return "events/list"; // => templates/events/list.html
+        return "events/list";
     }
 
-    // 🔹 Afficher le formulaire d’ajout
     @GetMapping("/add")
     public String showAddForm(Model model) {
         model.addAttribute("event", new Event());
-        return "events/form"; // => templates/events/form.html
+        return "events/form";
     }
 
-    // 🔹 Modifier un événement
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model) {
         Optional<Event> event = eventRepository.findById(id);
-        if (event.isPresent()) {
-            model.addAttribute("event", event.get());
-            return "events/form";
-        }
-        return "redirect:/events";
+        event.ifPresent(e -> model.addAttribute("event", e));
+        return event.isPresent() ? "events/form" : "redirect:/events/admin";
     }
 
-    // 🔹 Supprimer un événement
     @GetMapping("/delete/{id}")
     public String deleteEvent(@PathVariable Long id) {
         eventRepository.deleteById(id);
-        return "redirect:/events";
+        return "redirect:/events/admin";
     }
 
-    // 🔹 Sauvegarder un événement avec image
-    // 🔹 Sauvegarder un événement avec image
     @PostMapping("/save")
     public String saveEvent(@ModelAttribute("event") Event event,
                             @RequestParam("imageFile") MultipartFile imageFile) throws IOException {
@@ -76,34 +66,16 @@ public class EventController {
         }
 
         eventRepository.save(event);
-        return "redirect:/events";
+        return "redirect:/events/admin";
     }
-
-    // 🔹 Détails d’un événement (page publique)
     @GetMapping("/view/{id}")
-    public String viewEvent(@PathVariable Long id, Model model) {
-        Event event = eventRepository.findById(id).orElseThrow();
-        model.addAttribute("event", event);
-        return "events/details";
-// Va chercher templates/events/event-details.html
+    public String viewEventAdmin(@PathVariable Long id, Model model) {
+        return eventRepository.findById(id)
+                .map(event -> {
+                    model.addAttribute("event", event);
+                    return "events/details_admin"; // ✅ fichier HTML admin
+                })
+                .orElse("redirect:/events/admin?error=notfound");
     }
-    @GetMapping("/public")
-    public String afficherEvenementsPublic(Model model) {
-        List<Event> events = eventRepository.findAll();
-        model.addAttribute("events", events);
-        return "events/liste_public"; // car le fichier est dans templates/events/
-    }
-
-    @GetMapping("/search")
-    public String searchEvents(@RequestParam("keyword") String keyword, Model model) {
-        List<Event> results = eventRepository.findByTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCase(keyword, keyword);
-        model.addAttribute("events", results);
-        model.addAttribute("keyword", keyword);
-        return "events/liste_public"; // Affiche la même page avec les résultats
-    }
-
-
-
-
 
 }

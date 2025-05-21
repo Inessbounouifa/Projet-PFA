@@ -1,6 +1,5 @@
 package ma.enset.gestionbillets.controller;
 
-
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import ma.enset.gestionbillets.entities.Event;
@@ -14,7 +13,7 @@ import java.util.List;
 
 @Controller
 @AllArgsConstructor
-@RequestMapping("/cart")
+@RequestMapping("/cart") // accessible aux utilisateurs connectés
 public class CartController {
 
     private final EventRepository eventRepository;
@@ -24,26 +23,21 @@ public class CartController {
                             @RequestParam(defaultValue = "1") int quantity,
                             HttpSession session) {
         Event event = eventRepository.findById(id).orElseThrow();
-
-        // panier : une liste d'objets personnalisés contenant event + quantité
         List<Object[]> cart = (List<Object[]>) session.getAttribute("cart");
         if (cart == null) cart = new ArrayList<>();
-
         cart.add(new Object[]{event, quantity});
         session.setAttribute("cart", cart);
-
         return "redirect:/cart/view";
     }
 
-
     @GetMapping("/view")
     public String viewCart(HttpSession session, Model model) {
-        List<Event> cart = (List<Event>) session.getAttribute("cart");
+        List<Object[]> cart = (List<Object[]>) session.getAttribute("cart");
         if (cart == null) cart = new ArrayList<>();
         model.addAttribute("cart", cart);
         return "events/view";
-
     }
+
     @GetMapping("/remove/{index}")
     public String removeFromCart(@PathVariable int index, HttpSession session) {
         List<Object[]> cart = (List<Object[]>) session.getAttribute("cart");
@@ -53,5 +47,4 @@ public class CartController {
         session.setAttribute("cart", cart);
         return "redirect:/cart/view";
     }
-
 }
