@@ -203,6 +203,10 @@
             <li th:if="${not #authorization.expression('isAuthenticated()')}">
                 <a th:href="@{/events/login}">Connexion</a>
             </li>
+            <li th:if="${not #authorization.expression('isAuthenticated()')}">
+                <a th:href="@{/register}">Inscription</a>
+            </li>
+
 
             <!-- Si connecté (USER ou ADMIN) -->
             <li th:if="${#authorization.expression('isAuthenticated()')}">

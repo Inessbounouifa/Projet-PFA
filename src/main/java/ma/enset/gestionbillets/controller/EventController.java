@@ -78,4 +78,5 @@ public class EventController {
                 .orElse("redirect:/events/admin?error=notfound");
     }
 
+
 }

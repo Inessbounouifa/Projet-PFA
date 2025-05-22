@@ -51,12 +51,15 @@ public class SecurityConfig {
 
                 .logout(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/home", "/register", "/events/register", "/events/public",
+                        .requestMatchers(
+                                "/", "/home", "/register", "/events/register", "/events/public",
                                 "/events/view/**", "/events/search", "/events/login",
-                                "/css/**", "/js/**", "/images/**").permitAll()
+                                "/css/**", "/js/**", "/images/**"
+                        ).permitAll()
                         .requestMatchers("/cart/**", "/payment/**").hasRole("USER")
                         .requestMatchers("/events/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
+
                 );
 
         return http.build();
