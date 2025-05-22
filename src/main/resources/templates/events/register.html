@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Inscription</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #fff0f5; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        .form-container { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 350px; }
+        input, button { width: 100%; margin: 10px 0; padding: 10px; border-radius: 6px; border: 1px solid #ccc; }
+        button { background-color: #c2185b; color: white; border: none; }
+    </style>
+</head>
+<body>
+<div class="form-container">
+    <h2>Créer un compte</h2>
+    <form th:action="@{/register}" method="post">
+        <input type="text" name="username" placeholder="Nom d'utilisateur" required>
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="password" name="password" placeholder="Mot de passe" required>
+        <button type="submit">S'inscrire</button>
+    </form>
+</div>
+</body>
+</html>

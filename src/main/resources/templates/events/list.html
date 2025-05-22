@@ -169,6 +169,9 @@
             <li><a th:href="@{/events/public}">Événements</a></li>
             <li><a th:href="@{/events/admin}">Admin</a></li>
             <li th:if="${#authorization.expression('isAuthenticated()')}">
+            <li th:if="${#authentication.principal?.username == 'superadmin'}">
+                <a th:href="@{/events/admin/add-admin}">Ajouter un admin</a>
+            </li>
                 <form th:action="@{/logout}" method="post" style="display:inline;">
                     <button type="submit"
                             style="background: none; border: none; font: inherit; color: #6a1b3f; cursor: pointer;">
@@ -188,6 +191,7 @@
 </div>
 
 <a class="add-event" th:href="@{/events/admin/add}">Ajouter un événement</a>
+
 
 <div class="event-grid">
     <div class="event-card" th:each="event : ${events}">

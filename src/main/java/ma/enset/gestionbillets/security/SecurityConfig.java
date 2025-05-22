@@ -1,19 +1,26 @@
 package ma.enset.gestionbillets.security;
 
+import lombok.RequiredArgsConstructor;
+import ma.enset.gestionbillets.Services.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
+
+    private final UserDetailsServiceImpl userDetailsService;
+    private final CustomAuthenticationSuccessHandler successHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -21,44 +28,34 @@ public class SecurityConfig {
     }
 
     @Bean
-    public InMemoryUserDetailsManager inMemoryUserDetailsManager() {
-        PasswordEncoder encoder = passwordEncoder();
-        return new InMemoryUserDetailsManager(
-                User.withUsername("user1").password(encoder.encode("1234")).roles("USER").build(),
-                User.withUsername("user2").password(encoder.encode("1234")).roles("USER").build(),
-                User.withUsername("admin").password(encoder.encode("1234")).roles("USER", "ADMIN").build()
-        );
+    public AuthenticationManager authManager(HttpSecurity http) throws Exception {
+        AuthenticationManagerBuilder authBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
+        authBuilder
+                .userDetailsService(userDetailsService)
+                .passwordEncoder(passwordEncoder());
+        return authBuilder.build();
     }
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http,
                                                    CustomAuthenticationSuccessHandler successHandler) throws Exception {
         http
+                .userDetailsService(userDetailsService) // 🔧 obligatoire
                 .formLogin(form -> form
                         .loginPage("/events/login")
+                        .loginProcessingUrl("/events/login") // 👈 cette ligne manquait probablement
                         .successHandler(successHandler)
                         .permitAll()
                 )
+
                 .logout(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
-                        // ✅ VISITEURS
-                        .requestMatchers(
-                                "/", "/home",
-                                "/events/public",
-                                "/events/view/**",
-                                "/events/search",
-                                "/events/login",        // ✅ obligatoire pour que la page de login s'affiche
-                                "/css/**", "/js/**", "/images/**"
-                        ).permitAll()
-
-
-                        // ✅ UTILISATEUR CONNECTÉ
+                        .requestMatchers("/", "/home", "/register", "/events/register", "/events/public",
+                                "/events/view/**", "/events/search", "/events/login",
+                                "/css/**", "/js/**", "/images/**").permitAll()
                         .requestMatchers("/cart/**", "/payment/**").hasRole("USER")
-
-                        // ✅ ADMINISTRATEUR
                         .requestMatchers("/events/admin/**").hasRole("ADMIN")
-
-                        // ❗️ AUTRES = AUTH REQUISE
                         .anyRequest().authenticated()
                 );
 
@@ -66,6 +63,9 @@ public class SecurityConfig {
     }
 
 
-
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return userDetailsService;
+    }
 
 }
