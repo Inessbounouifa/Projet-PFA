@@ -1,10 +1,12 @@
-<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Accueil - Événements</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&display=swap" rel="stylesheet">
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -13,27 +15,48 @@
             padding-top: 80px;
         }
         .navbar {
-            background-color: #f8bbd0;
-            padding: 15px 30px;
+            background-color: white;
+            padding: 20px 40px;
             position: fixed;
-            top: 0;
-            width: 100%;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 1250px;
             z-index: 999;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-radius: 50px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
+
         .navbar-container {
-            max-width: 1200px;
-            margin: auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
+
         .logo {
+            display: flex;
+            align-items: center;
             font-size: 1.5rem;
             font-weight: bold;
             color: #880e4f;
             text-decoration: none;
         }
+
+        .logo-icon {
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+        }
+        .logo span {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 1.5rem;
+            color: #880e4f;
+        }
+
+
+
         .nav-links {
             list-style: none;
             display: flex;
@@ -42,21 +65,83 @@
             padding: 0;
         }
         .nav-links li a {
-            color: #6a1b3f;
+            font-family: 'Montserrat', sans-serif; /* 👈 Ajouté ici */
+            font-weight: 600;
+            font-size: 1rem;
+            color: #d81b60;
             text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s ease;
+            padding: 10px 20px;
+            transition: all 0.3s ease;
+            border-radius: 30px;
         }
+
+
         .nav-links li a:hover {
+            background-color: #ffe3ec;
             color: #ad1457;
         }
 
         h1 {
-            font-family: 'Playfair Display', serif;
+            font-family: 'Cinzel Decorative', cursive;
             text-align: center;
             color: #8b1c47;
             font-size: 2.5rem;
             margin: 30px 0 10px;
+            animation: zoomIn 1.5s ease-in-out forwards;
+            opacity: 0;
+            transform: scale(0.8);
+        }
+
+        /* Animation */
+        @keyframes zoomIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+
+        .search-bar-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+            margin-bottom: 40px;
+        }
+
+        .search-bar-container input {
+            background-color: #f8e1e8;
+            border: none;
+            padding: 1rem;
+            font-size: 1rem;
+            width: 400px;
+            border-radius: 1rem;
+            color: #ffffff;
+            box-shadow: 0 0.4rem #dfd9d9;
+            cursor: pointer;
+        }
+
+        .search-bar-container input:focus {
+            outline-color: #eec4e1;
+        }
+
+        .search-bar-container button {
+            margin-left: 15px;
+            background: #f48fb1;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 30px;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .search-bar-container button:hover {
+            background-color: #e57399;
         }
 
         .swiper {
@@ -129,44 +214,6 @@
             color: #d81b60;
         }
 
-        .search-bar-container {
-            display: flex;
-            justify-content: center;
-            margin-top: 20px;
-            margin-bottom: 30px;
-        }
-
-        .search-bar-container input {
-            width: 60%;
-            padding: 12px 20px;
-            border: 2px solid #f48fb1;
-            border-radius: 30px 0 0 30px;
-            font-size: 1rem;
-            outline: none;
-            color: #6a1b3f;
-            border-right: none;
-        }
-
-        .search-bar-container input::placeholder {
-            color: #b55b7b;
-        }
-
-        .search-button {
-            background-color: #f48fb1;
-            border: 2px solid #f48fb1;
-            border-left: none;
-            border-radius: 0 30px 30px 0;
-            color: white;
-            font-size: 1rem;
-            padding: 12px 20px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .search-button:hover {
-            background-color: #e57399;
-        }
-
         .pink-footer {
             background-color: #f8bbd0;
             color: #6a1b3f;
@@ -177,15 +224,23 @@
         }
     </style>
 </head>
+
 <body>
 <nav class="navbar">
     <div class="navbar-container">
-        <a href="/" class="logo">🎟 GestionBillets</a>
+        <!-- Zone gauche : logo + texte -->
+        <div class="logo-area">
+            <a href="/" class="logo">
+                <img src="/images/billet.png" alt="Logo" class="logo-icon">
+                <span>EventPass</span>
+            </a>
+
+        </div>
+
+        <!-- Zone droite : liens -->
         <ul class="nav-links">
-            <!-- Toujours affiché -->
             <li><a th:href="@{/}">Accueil</a></li>
 
-            <!-- Si connecté en tant que USER seulement -->
             <li th:if="${#authorization.expression('hasRole(''USER'') and !hasRole(''ADMIN'')')}">
                 <a th:href="@{/events/public}">Événements</a>
             </li>
@@ -194,12 +249,10 @@
                 <a th:href="@{/cart/view}">Panier</a>
             </li>
 
-            <!-- Si connecté en tant qu’ADMIN -->
             <li th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
                 <a th:href="@{/events/admin}">Gérer les événements</a>
             </li>
 
-            <!-- Si NON connecté -->
             <li th:if="${not #authorization.expression('isAuthenticated()')}">
                 <a th:href="@{/events/login}">Connexion</a>
             </li>
@@ -207,8 +260,6 @@
                 <a th:href="@{/register}">Inscription</a>
             </li>
 
-
-            <!-- Si connecté (USER ou ADMIN) -->
             <li th:if="${#authorization.expression('isAuthenticated()')}">
                 <form th:action="@{/logout}" method="post" style="display: inline;">
                     <button type="submit"

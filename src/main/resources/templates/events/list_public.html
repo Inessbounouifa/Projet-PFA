@@ -113,8 +113,14 @@
 
             <!-- Déconnexion visible uniquement si connecté -->
             <li th:if="${#authorization.expression('isAuthenticated()')}">
-                <a th:href="@{/logout}">Déconnexion</a>
+                <form th:action="@{/logout}" method="post" style="display:inline;">
+                    <button type="submit"
+                            style="background: none; border: none; font: inherit; color: #6a1b3f; cursor: pointer;">
+                        Déconnexion
+                    </button>
+                </form>
             </li>
+''j
         </ul>
     </div>
 </nav>
