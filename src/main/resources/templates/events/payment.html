@@ -3,58 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <title>Paiement</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet">
+
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Montserrat', sans-serif;
             background-color: #fff0f5;
             margin: 0;
             padding-top: 100px;
         }
 
         .navbar {
-            background-color: #f8bbd0;
-            padding: 15px 30px;
+            background-color: white;
+            padding: 20px 40px;
             position: fixed;
-            top: 0;
-            width: 100%;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 1250px;
             z-index: 999;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-radius: 50px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
 
         .navbar-container {
-            max-width: 1200px;
-            margin: auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #880e4f;
+            display: flex;
+            align-items: center;
             text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+
+        .logo span {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 1.5rem;
+            color: #880e4f;
         }
 
         .nav-links {
             list-style: none;
             display: flex;
-            gap: 20px;
+            gap: 30px;
             margin: 0;
             padding: 0;
         }
 
         .nav-links li a {
-            color: #6a1b3f;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            color: #d81b60;
             text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s ease;
+            padding: 10px 20px;
+            border-radius: 30px;
+            transition: all 0.3s ease;
         }
 
         .nav-links li a:hover {
+            background-color: #ffe3ec;
             color: #ad1457;
         }
 
+
+        /* ✅ CONTENU PAIEMENT */
         .container {
             max-width: 600px;
             background: white;
@@ -99,6 +123,21 @@
             background-color: #e57399;
         }
 
+        .payment-method img {
+            height: 30px;
+            margin-right: 10px;
+        }
+
+        .checkbox {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .checkbox input {
+            margin-right: 8px;
+        }
+
         a {
             display: block;
             text-align: center;
@@ -110,53 +149,100 @@
         a:hover {
             text-decoration: underline;
         }
+
+        .info {
+            font-size: 0.85rem;
+            color: gray;
+            margin-top: 15px;
+        }
     </style>
 </head>
 <body>
 
-<!-- ✅ Navbar utilisateur -->
+<!-- ✅ NAVBAR -->
 <nav class="navbar">
     <div class="navbar-container">
-        <a href="/" class="logo">🎟 Billetterie</a>
+        <!-- Logo + texte -->
+        <a href="/" class="logo">
+            <img src="/images/billet.png" alt="Logo" class="logo-icon">
+            <span>GestionBillets</span>
+        </a>
+
+        <!-- Liens de navigation -->
         <ul class="nav-links">
-            <li><a href="/">Accueil</a></li>
+            <li><a th:href="@{/}">Accueil</a></li>
             <li><a th:href="@{/events/public}">Événements</a></li>
-            <li><a th:href="@{/cart/view}">Panier</a></li>
+            <li th:if="${#authorization.expression('hasRole(''USER'') and !hasRole(''ADMIN'')')}">
+                <a th:href="@{/cart/view}">Panier</a>
+            </li>
+            <li th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+                <a th:href="@{/events/admin}">Gérer les événements</a>
+            </li>
+            <li th:if="${not #authorization.expression('isAuthenticated()')}">
+                <a th:href="@{/events/login}">Connexion</a>
+            </li>
+            <li th:if="${not #authorization.expression('isAuthenticated()')}">
+                <a th:href="@{/register}">Inscription</a>
+            </li>
             <li th:if="${#authorization.expression('isAuthenticated()')}">
                 <form th:action="@{/logout}" method="post" style="display:inline;">
                     <button type="submit"
-                            style="background: none; border: none; font: inherit; color: #6a1b3f; cursor: pointer;">
+                            style="background: none; border: none; padding: 0; font: inherit; color: #6a1b3f; cursor: pointer;">
                         Déconnexion
                     </button>
                 </form>
             </li>
-
         </ul>
     </div>
 </nav>
 
+
+<!-- ✅ FORMULAIRE PAIEMENT -->
 <div class="container">
-    <h1>Paiement</h1>
+    <h1>DÉTAIL DE PAIEMENT</h1>
 
     <p><strong>Total :</strong> <span th:text="${total}"></span> MAD</p>
 
     <form th:action="@{/payment/confirm}" method="post">
         <label>Nom complet :</label>
-        <input type="text" name="name" required>
+        <input type="text" name="name" placeholder="Nom du porteur de la carte" required>
 
         <label>Adresse e-mail :</label>
-        <input type="email" name="email" required>
+        <input type="email" name="email" placeholder="Email" required>
 
-        <label>Mode de paiement :</label>
+        <label>Numéro de carte de paiement</label>
+        <input type="text" name="cardNumber" placeholder="Numéro de carte" required>
+
+        <label>Date d'expiration</label>
+        <div style="display: flex; gap: 10px;">
+            <select name="expMonth" required>
+                <option value="01">01</option><option value="02">02</option>
+                <option value="03">03</option><option value="04">04</option>
+                <option value="05">05</option><option value="06">06</option>
+                <option value="07">07</option><option value="08">08</option>
+                <option value="09">09</option><option value="10">10</option>
+                <option value="11">11</option><option value="12">12</option>
+            </select>
+            <select name="expYear" required>
+                <option th:each="i : ${#numbers.sequence(2025, 2032)}"
+                        th:value="${i}" th:text="${i}"></option>
+            </select>
+        </div>
+
+        <label>Code de vérification</label>
+        <input type="text" name="cvv" placeholder="CVV" required>
+
+        <label>Méthode de paiement :</label>
         <select name="method" required>
-            <option value="Visa">Carte Visa</option>
-            <option value="PayPal">PayPal</option>
+            <option value="Visa">Visa</option>
+            <option value="Mastercard">Mastercard</option>
             <option value="CMI">CMI</option>
         </select>
 
         <button type="submit">Payer</button>
     </form>
 
+    <p class="info">Les informations sur le paiement vous concernant resteront confidentielles.</p>
     <a th:href="@{/cart/view}">← Retour au panier</a>
 </div>
 

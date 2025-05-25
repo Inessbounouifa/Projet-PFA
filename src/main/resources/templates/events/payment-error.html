@@ -13,28 +13,42 @@
         }
 
         .navbar {
-            background-color: #f8bbd0;
-            padding: 15px 30px;
+            background-color: white;
+            padding: 20px 40px;
             position: fixed;
-            top: 0;
-            width: 100%;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 1250px;
             z-index: 999;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-radius: 50px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
 
         .navbar-container {
-            max-width: 1200px;
-            margin: auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #880e4f;
+        .logo-area .logo {
+            display: flex;
+            align-items: center;
             text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+        }
+
+        .logo span {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 1.5rem;
+            color: #880e4f;
         }
 
         .nav-links {
@@ -46,14 +60,21 @@
         }
 
         .nav-links li a {
-            color: #6a1b3f;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            color: #d81b60;
             text-decoration: none;
-            font-weight: 500;
+            padding: 10px 20px;
+            border-radius: 30px;
+            transition: all 0.3s ease;
         }
 
         .nav-links li a:hover {
+            background-color: #ffe3ec;
             color: #ad1457;
         }
+
 
         h1 {
             color: #c62828;
