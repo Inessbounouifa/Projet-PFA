@@ -3,14 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <title>Paiement</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"/>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         body {
             font-family: 'Montserrat', sans-serif;
             background-color: #fff0f5;
             margin: 0;
-            padding-top: 100px;
+            padding-top: 120px;
+            display: flex;
+            justify-content: center;
         }
 
         .navbar {
@@ -43,13 +49,12 @@
             width: 30px;
             height: 30px;
             margin-right: 10px;
-            vertical-align: middle;
         }
 
         .logo span {
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Great Vibes', cursive;
             font-weight: 600;
-            font-size: 1.5rem;
+            font-size: 2rem;
             color: #880e4f;
         }
 
@@ -77,173 +82,197 @@
             color: #ad1457;
         }
 
-
-        /* ✅ CONTENU PAIEMENT */
-        .container {
-            max-width: 600px;
-            background: white;
-            margin: 40px auto;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        .modal {
+            width: fit-content;
+            height: fit-content;
+            background: #FFFFFF;
+            box-shadow: 0px 187px 75px rgba(0, 0, 0, 0.01), 0px 105px 63px rgba(0, 0, 0, 0.05), 0px 47px 47px rgba(0, 0, 0, 0.09), 0px 12px 26px rgba(0, 0, 0, 0.1), 0px 0px 0px rgba(0, 0, 0, 0.1);
+            border-radius: 26px;
+            max-width: 450px;
         }
 
-        h1 {
-            color: #c2185b;
-            text-align: center;
-        }
-
-        label {
-            font-weight: bold;
-            display: block;
-            margin-top: 15px;
-        }
-
-        input, select {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-        }
-
-        button {
-            background-color: #f48fb1;
-            color: white;
-            border: none;
-            padding: 12px;
-            margin-top: 20px;
-            width: 100%;
-            font-size: 1rem;
-            border-radius: 30px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #e57399;
-        }
-
-        .payment-method img {
-            height: 30px;
-            margin-right: 10px;
-        }
-
-        .checkbox {
+        .form {
             display: flex;
-            align-items: center;
-            margin-top: 10px;
+            flex-direction: column;
+            gap: 20px;
+            padding: 20px;
         }
 
-        .checkbox input {
-            margin-right: 8px;
+        .payment--options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
         }
 
-        a {
-            display: block;
+        .payment--options button {
+            height: 55px;
+            background: #F2F2F2;
+            border-radius: 11px;
+            padding: 0;
+            border: 2px solid transparent;
+            transition: border-color 0.3s;
+        }
+
+        .payment--options button.selected {
+            border-color: #d81b60;
+            box-shadow: 0 0 5px #d81b60;
+        }
+
+        .payment--options button img {
+            height: 24px;
+        }
+
+        .separator {
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            gap: 10px;
+            color: #8B8E98;
             text-align: center;
-            margin-top: 20px;
-            color: #d81b60;
-            text-decoration: none;
+            font-size: 11px;
+            font-weight: 600;
         }
 
-        a:hover {
-            text-decoration: underline;
+        .separator .line {
+            height: 1px;
+            background-color: #e8e8e8;
         }
 
-        .info {
-            font-size: 0.85rem;
-            color: gray;
-            margin-top: 15px;
+        .credit-card-info--form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .input_container {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .input_label {
+            font-size: 10px;
+            color: #8B8E98;
+            font-weight: 600;
+        }
+
+        .input_field {
+            height: 40px;
+            padding-left: 16px;
+            border-radius: 9px;
+            background-color: #F2F2F2;
+            border: 1px solid transparent;
+        }
+
+        .split {
+            display: grid;
+            grid-template-columns: 4fr 2fr;
+            gap: 15px;
+        }
+
+        .purchase--btn {
+            height: 55px;
+            border-radius: 11px;
+            background: #d81b60;
+            color: white;
+            font-weight: 700;
+            font-size: 13px;
+            border: none;
+            transition: background 0.3s ease;
+        }
+
+        .purchase--btn:hover {
+            background: #ad1457;
+        }
+
+        .input_field::-webkit-outer-spin-button,
+        .input_field::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .input_field[type=number] {
+            -moz-appearance: textfield;
         }
     </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const buttons = document.querySelectorAll(".payment--options button");
+            const hiddenInput = document.createElement("input");
+            hiddenInput.type = "hidden";
+            hiddenInput.name = "method";
+            document.querySelector("form.form").appendChild(hiddenInput);
+
+            buttons.forEach(btn => {
+                btn.addEventListener("click", () => {
+                    buttons.forEach(b => b.classList.remove("selected"));
+                    btn.classList.add("selected");
+                    hiddenInput.value = btn.getAttribute("data-method");
+                });
+            });
+        });
+    </script>
 </head>
 <body>
-
-<!-- ✅ NAVBAR -->
 <nav class="navbar">
     <div class="navbar-container">
-        <!-- Logo + texte -->
         <a href="/" class="logo">
             <img src="/images/billet.png" alt="Logo" class="logo-icon">
-            <span>GestionBillets</span>
+            <span>EventPass</span>
         </a>
-
-        <!-- Liens de navigation -->
         <ul class="nav-links">
             <li><a th:href="@{/}">Accueil</a></li>
-            <li><a th:href="@{/events/public}">Événements</a></li>
-            <li th:if="${#authorization.expression('hasRole(''USER'') and !hasRole(''ADMIN'')')}">
-                <a th:href="@{/cart/view}">Panier</a>
-            </li>
-            <li th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
-                <a th:href="@{/events/admin}">Gérer les événements</a>
-            </li>
-            <li th:if="${not #authorization.expression('isAuthenticated()')}">
-                <a th:href="@{/events/login}">Connexion</a>
-            </li>
-            <li th:if="${not #authorization.expression('isAuthenticated()')}">
-                <a th:href="@{/register}">Inscription</a>
-            </li>
+            <li th:if="${#authorization.expression('hasRole(''USER'') and !hasRole(''ADMIN'')')}"><a th:href="@{/events/public}">Événements</a></li>
+            <li th:if="${#authorization.expression('hasRole(''USER'') and !hasRole(''ADMIN'')')}"><a th:href="@{/cart/view}">Panier</a></li>
+            <li th:if="${#authorization.expression('hasRole(''ADMIN'')')}"><a th:href="@{/events/admin}">Gérer les événements</a></li>
+            <li th:if="${not #authorization.expression('isAuthenticated()')}"><a th:href="@{/events/login}">Connexion</a></li>
+            <li th:if="${not #authorization.expression('isAuthenticated()')}"><a th:href="@{/register}">Inscription</a></li>
             <li th:if="${#authorization.expression('isAuthenticated()')}">
                 <form th:action="@{/logout}" method="post" style="display:inline;">
-                    <button type="submit"
-                            style="background: none; border: none; padding: 0; font: inherit; color: #6a1b3f; cursor: pointer;">
-                        Déconnexion
-                    </button>
+                    <button type="submit" style="background: none; border: none; padding: 0; font: inherit; color: #6a1b3f; cursor: pointer;">Déconnexion</button>
                 </form>
             </li>
         </ul>
     </div>
 </nav>
 
-
-<!-- ✅ FORMULAIRE PAIEMENT -->
-<div class="container">
-    <h1>DÉTAIL DE PAIEMENT</h1>
-
-    <p><strong>Total :</strong> <span th:text="${total}"></span> MAD</p>
-
-    <form th:action="@{/payment/confirm}" method="post">
-        <label>Nom complet :</label>
-        <input type="text" name="name" placeholder="Nom du porteur de la carte" required>
-
-        <label>Adresse e-mail :</label>
-        <input type="email" name="email" placeholder="Email" required>
-
-        <label>Numéro de carte de paiement</label>
-        <input type="text" name="cardNumber" placeholder="Numéro de carte" required>
-
-        <label>Date d'expiration</label>
-        <div style="display: flex; gap: 10px;">
-            <select name="expMonth" required>
-                <option value="01">01</option><option value="02">02</option>
-                <option value="03">03</option><option value="04">04</option>
-                <option value="05">05</option><option value="06">06</option>
-                <option value="07">07</option><option value="08">08</option>
-                <option value="09">09</option><option value="10">10</option>
-                <option value="11">11</option><option value="12">12</option>
-            </select>
-            <select name="expYear" required>
-                <option th:each="i : ${#numbers.sequence(2025, 2032)}"
-                        th:value="${i}" th:text="${i}"></option>
-            </select>
+<div class="modal">
+    <form class="form" th:action="@{/payment/confirm}" method="post">
+        <div class="payment--options">
+            <button type="button" data-method="Visa"><img src="/images/visa.png" alt="Visa"></button>
+            <button type="button" data-method="Mastercard"><img src="/images/mastercard.png" alt="Mastercard"></button>
+            <button type="button" data-method="PayPal"><img src="/images/paypal.png" alt="PayPal"></button>
         </div>
 
-        <label>Code de vérification</label>
-        <input type="text" name="cvv" placeholder="CVV" required>
+        <div class="separator">
+            <hr class="line">
+            <p>ou utiliser une carte</p>
+            <hr class="line">
+        </div>
 
-        <label>Méthode de paiement :</label>
-        <select name="method" required>
-            <option value="Visa">Visa</option>
-            <option value="Mastercard">Mastercard</option>
-            <option value="CMI">CMI</option>
-        </select>
+        <div class="credit-card-info--form">
+            <div class="input_container">
+                <label class="input_label">Nom complet</label>
+                <input class="input_field" type="text" name="name" placeholder="Nom du porteur" required>
+            </div>
+            <div class="input_container">
+                <label class="input_label">Adresse e-mail</label>
+                <input class="input_field" type="email" name="email" placeholder="Email" required>
+            </div>
+            <div class="input_container">
+                <label class="input_label">Numéro de carte</label>
+                <input class="input_field" type="number" name="cardNumber" placeholder="0000 0000 0000 0000" required>
+            </div>
+            <div class="input_container">
+                <label class="input_label">Date / CVV</label>
+                <div class="split">
+                    <input class="input_field" type="text" name="expDate" placeholder="MM/AA" required>
+                    <input class="input_field" type="number" name="cvv" placeholder="CVV" required>
+                </div>
+            </div>
+        </div>
 
-        <button type="submit">Payer</button>
+        <button class="purchase--btn" type="submit">✅ Payer <span th:text="${total}"></span> MAD</button>
     </form>
-
-    <p class="info">Les informations sur le paiement vous concernant resteront confidentielles.</p>
-    <a th:href="@{/cart/view}">← Retour au panier</a>
 </div>
 
 </body>

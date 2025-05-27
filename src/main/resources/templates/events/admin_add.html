@@ -5,49 +5,73 @@
     <title>Ajouter un administrateur</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Montserrat', sans-serif;
             background-color: #fff0f5;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            margin: 0;
         }
 
         .form-container {
             background-color: white;
             padding: 40px;
             border-radius: 16px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            width: 400px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            width: 420px;
+            position: relative;
         }
 
         h2 {
             text-align: center;
             color: #c2185b;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+            font-family: 'Playfair Display', serif;
         }
 
         input[type="text"], input[type="email"], input[type="password"] {
             width: 100%;
-            padding: 12px;
-            margin: 10px 0;
+            padding: 12px 14px;
+            margin-bottom: 15px;
             border: 1px solid #ccc;
-            border-radius: 8px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: 'Montserrat', sans-serif;
         }
 
         button {
             width: 100%;
-            background-color: #f48fb1;
+            background-color: #d81b60;
             color: white;
             border: none;
-            padding: 12px;
-            border-radius: 8px;
-            font-size: 16px;
+            padding: 14px;
+            border-radius: 30px;
+            font-size: 15px;
+            font-weight: bold;
             cursor: pointer;
+            box-shadow: 0 6px 15px rgba(216, 27, 96, 0.2);
+            transition: all 0.3s ease;
         }
 
         button:hover {
-            background-color: #e57399;
+            background-color: #ad1457;
+            box-shadow: 0 8px 18px rgba(216, 27, 96, 0.35);
+        }
+
+        .retour-lien {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #c2185b;
+            font-weight: 600;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .retour-lien:hover {
+            color: #ad1457;
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -61,6 +85,7 @@
         <input type="password" name="password" placeholder="Mot de passe" required />
         <button type="submit">Créer</button>
     </form>
+    <a th:href="@{/events/admin}" class="retour-lien">← Retour à la liste</a>
 </div>
 
 </body>

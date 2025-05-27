@@ -3,16 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <title>Formulaire Événement</title>
+
+    <!-- Polices & Librairies -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f3e5f5;
-            padding-top: 100px;
+            background-color: #fff0f5;
+            margin: 0;
+            padding-top: 80px;
         }
 
         .navbar {
             background-color: white;
-            padding: 20px 40px;
+            padding: 10px 25px;
             position: fixed;
             top: 20px;
             left: 50%;
@@ -30,10 +39,13 @@
             align-items: center;
         }
 
-        .logo-area .logo {
+        .logo {
             display: flex;
             align-items: center;
             text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #880e4f;
         }
 
         .logo-icon {
@@ -43,9 +55,9 @@
         }
 
         .logo span {
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Great Vibes', cursive;
             font-weight: 600;
-            font-size: 1.5rem;
+            font-size: 2rem;
             color: #880e4f;
         }
 
@@ -73,60 +85,78 @@
             color: #ad1457;
         }
 
-
         form {
             background-color: white;
-            max-width: 600px;
-            margin: auto;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            position: relative;
         }
 
         h1 {
             text-align: center;
-            color: #880e4f;
+            font-family: 'Cinzel Decorative', cursive;
+            color: #8b1c47;
+            font-size: 2.3rem;
+            margin-bottom: 20px;
         }
 
         label {
             display: block;
-            margin-top: 15px;
-            font-weight: bold;
+            margin-top: 20px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            color: #6a1b3f;
         }
 
         input, textarea, select {
             width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            border-radius: 6px;
+            padding: 12px;
+            margin-top: 8px;
+            border-radius: 12px;
             border: 1px solid #ccc;
+            font-family: 'Montserrat', sans-serif;
         }
 
         button {
-            background-color: #f48fb1;
-            color: white;
+            padding: 1.3em 3em;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+            color: #fff;
+            background-color: #d81b60;
             border: none;
-            padding: 12px;
-            margin-top: 20px;
-            width: 100%;
-            font-size: 1rem;
-            border-radius: 30px;
+            border-radius: 45px;
+            box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
             cursor: pointer;
+            margin-top: 30px;
         }
 
         button:hover {
-            background-color: #e57399;
+            background-color: #ad1457;
+            box-shadow: 0px 15px 20px rgba(216, 27, 96, 0.4);
+            color: #fff;
+            transform: translateY(-5px);
         }
 
-        a {
-            display: block;
-            text-align: center;
-            margin-top: 20px;
+        .form-footer {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 15px;
+        }
+
+        .link-retour {
             color: #d81b60;
+            font-weight: bold;
             text-decoration: none;
+            font-family: 'Montserrat', sans-serif;
         }
 
-        a:hover {
+        .link-retour:hover {
             text-decoration: underline;
         }
     </style>
@@ -136,11 +166,14 @@
 <!-- ✅ Navbar admin -->
 <nav class="navbar">
     <div class="navbar-container">
-        <a href="/" class="logo">🎟 Billetterie</a>
+        <a href="/" class="logo">
+            <img src="/images/billet.png" alt="Logo" class="logo-icon">
+            <span>EventPass</span>
+        </a>
         <ul class="nav-links">
-            <li><a href="/">Accueil</a></li>
+            <li><a th:href="@{/}">Accueil</a></li>
             <li><a th:href="@{/events/public}">Événements</a></li>
-            <li th:if="${#authorization.expression('hasRole(''ADMIN'')')}"><a th:href="@{/events/admin}">Admin</a></li>
+            <li><a th:href="@{/events/admin}">Admin</a></li>
             <li><a th:href="@{/logout}">Déconnexion</a></li>
         </ul>
     </div>
@@ -176,9 +209,10 @@
     <input type="file" name="imageFile"/>
 
     <button type="submit">Enregistrer</button>
+    <div class="form-footer">
+        <a th:href="@{/events/admin}" class="link-retour">← Retour à la liste</a>
+    </div>
 </form>
-
-<a th:href="@{/events/admin}">← Retour à la liste</a>
 
 </body>
 </html>

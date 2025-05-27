@@ -6,6 +6,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"/>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
     <style>
         body {
@@ -14,6 +16,8 @@
             margin: 0;
             padding-top: 80px;
         }
+
+        /* --- NAVBAR --- */
         .navbar {
             background-color: white;
             padding: 20px 40px;
@@ -48,14 +52,13 @@
             height: 30px;
             margin-right: 10px;
         }
+
         .logo span {
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Great Vibes', cursive;
             font-weight: 600;
-            font-size: 1.5rem;
+            font-size: 2rem;
             color: #880e4f;
         }
-
-
 
         .nav-links {
             list-style: none;
@@ -64,23 +67,24 @@
             margin: 0;
             padding: 0;
         }
+
         .nav-links li a {
-            font-family: 'Montserrat', sans-serif; /* 👈 Ajouté ici */
+            font-family: 'Montserrat', sans-serif;
             font-weight: 600;
             font-size: 1rem;
             color: #d81b60;
             text-decoration: none;
             padding: 10px 20px;
-            transition: all 0.3s ease;
             border-radius: 30px;
+            transition: all 0.3s ease;
         }
-
 
         .nav-links li a:hover {
             background-color: #ffe3ec;
             color: #ad1457;
         }
 
+        /* --- TITRE --- */
         h1 {
             font-family: 'Cinzel Decorative', cursive;
             text-align: center;
@@ -92,7 +96,6 @@
             transform: scale(0.8);
         }
 
-        /* Animation */
         @keyframes zoomIn {
             0% {
                 opacity: 0;
@@ -104,46 +107,58 @@
             }
         }
 
-
-        .search-bar-container {
+        /* --- BARRE DE RECHERCHE --- */
+        .styled-search-form {
             display: flex;
             justify-content: center;
-            margin-top: 30px;
-            margin-bottom: 40px;
+            margin: 40px 0;
         }
 
-        .search-bar-container input {
-            background-color: #f8e1e8;
+        .styled-search-box {
+            display: flex;
+            align-items: center;
+            background: #ffe4ec;
+            border-radius: 50px;
+            box-shadow: 0 10px 20px rgba(255, 160, 190, 0.4);
+            padding: 10px 25px;
+            width: 650px;
+            max-width: 95%;
+            position: relative;
+        }
+
+        .styled-search-box input {
             border: none;
-            padding: 1rem;
+            background: transparent;
             font-size: 1rem;
-            width: 400px;
-            border-radius: 1rem;
-            color: #ffffff;
-            box-shadow: 0 0.4rem #dfd9d9;
+            flex: 1;
+            padding: 12px;
+            font-family: 'Montserrat', sans-serif;
+            color: #6a1b3f;
+            outline: none;
+        }
+
+        .search-icon-button {
+            background: none;
+            border: none;
+            margin-right: 10px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: #d81b60;
+            padding: 0;
+        }
+
+        .search-icon-button:hover i {
+            color: #ad1457;
+        }
+
+        .voice-icon {
+            color: #d81b60;
+            font-size: 1.2rem;
+            margin-left: 10px;
             cursor: pointer;
         }
 
-        .search-bar-container input:focus {
-            outline-color: #eec4e1;
-        }
-
-        .search-bar-container button {
-            margin-left: 15px;
-            background: #f48fb1;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 30px;
-            color: white;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background 0.3s ease;
-        }
-
-        .search-bar-container button:hover {
-            background-color: #e57399;
-        }
-
+        /* --- SWIPER --- */
         .swiper {
             padding: 40px 20px;
             max-width: 1200px;
@@ -214,30 +229,91 @@
             color: #d81b60;
         }
 
+        /* --- FOOTER --- */
         .pink-footer {
-            background-color: #f8bbd0;
+            background-color: #fde8f0;
             color: #6a1b3f;
-            padding: 40px 20px;
-            font-size: 0.95rem;
-            margin-top: 60px;
-            border-top: 1px solid #f48fb1;
+            padding: 60px 20px;
+            text-align: center;
+            font-family: 'Playfair Display', serif;
         }
+
+        .pink-footer h2 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: #880e4f;
+        }
+
+        .pink-footer p {
+            font-size: 1.1rem;
+            margin: 5px 0 20px;
+            color: #6a1b3f;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .footer-columns {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 50px;
+            padding-top: 40px;
+            border-top: 1px solid #e9a8c5;
+        }
+
+        .footer-column {
+            width: 220px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .footer-column:hover {
+            transform: translateY(-5px);
+        }
+
+        .footer-column i {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: #d81b60;
+            display: block;
+        }
+
+        .footer-column h4 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            color: #6a1b3f;
+        }
+
+        .footer-column p {
+            font-size: 0.95rem;
+            font-family: 'Arial', sans-serif;
+            line-height: 1.5;
+            color: #6a1b3f;
+        }
+
     </style>
 </head>
+
 
 <body>
 <nav class="navbar">
     <div class="navbar-container">
-        <!-- Zone gauche : logo + texte -->
+        <!-- Logo -->
         <div class="logo-area">
             <a href="/" class="logo">
                 <img src="/images/billet.png" alt="Logo" class="logo-icon">
                 <span>EventPass</span>
             </a>
-
         </div>
 
-        <!-- Zone droite : liens -->
+        <!-- Liens -->
         <ul class="nav-links">
             <li><a th:href="@{/}">Accueil</a></li>
 
@@ -256,6 +332,7 @@
             <li th:if="${not #authorization.expression('isAuthenticated()')}">
                 <a th:href="@{/events/login}">Connexion</a>
             </li>
+
             <li th:if="${not #authorization.expression('isAuthenticated()')}">
                 <a th:href="@{/register}">Inscription</a>
             </li>
@@ -276,11 +353,18 @@
 
 
 
+
 <h1>Bienvenue sur notre plateforme d'événements</h1>
-<form th:action="@{/events/search}" method="get" class="search-bar-container">
-    <input type="text" name="keyword" placeholder="Rechercher un événement..." required />
-    <button type="submit" class="search-button">🔍</button>
+<form th:action="@{/events/search}" method="get" class="styled-search-form">
+    <div class="styled-search-box">
+        <button type="submit" class="search-icon-button">
+            <i class="fa fa-search"></i>
+        </button>
+        <input type="text" name="keyword" placeholder="Rechercher un événement..." required />
+        <i class="fa fa-microphone voice-icon"></i>
+    </div>
 </form>
+
 
 <div class="swiper swiper-container">
     <div class="swiper-wrapper">
@@ -319,33 +403,40 @@
         }
     });
 </script>
-
 <footer class="pink-footer">
-    <div class="footer-container">
-        <div class="footer-column">
-            <h2 class="footer-logo">🎟 Billetterie</h2>
-            <p>Votre plateforme d'événements au Maroc. Concerts, festivals, spectacles... tout à portée de clic !</p>
-        </div>
-        <div class="footer-column">
-            <h4>Explorer</h4>
-            <ul>
-                <li th:if="${#authorization.expression('hasRole(''USER'') and !hasRole(''ADMIN'')')}">
-                    <a th:href="@{/events/public}">Événements</a>
-                </li>
+    <h2>EventPass</h2>
+    <p>Votre plateforme d'événements au Maroc. Concerts, festivals, spectacles... tout à portée de clic !</p>
 
-                <li><a href="/login">Connexion</a></li>
-            </ul>
-        </div>
+    <div class="footer-columns">
         <div class="footer-column">
-            <h4>Billetterie</h4>
-            <ul>
-                <li><a href="#">À propos</a></li>
-                <li><a href="#">Contact</a></li>
-                <li><a href="#">FAQ</a></li>
-            </ul>
+            <i class="fa-solid fa-percent"></i>
+            <h4>Sans frais cachés</h4>
+            <p>Réservez vos événements préférés sans frais supplémentaires.</p>
+        </div>
+
+        <div class="footer-column">
+            <i class="fa-solid fa-scissors"></i>
+            <h4>Offres & Réductions</h4>
+            <p>Profitez d'offres exclusives, réductions et bonus pour les membres.</p>
+        </div>
+
+        <div class="footer-column">
+            <i class="fa-solid fa-ticket"></i>
+            <h4>Billets numériques</h4>
+            <p>Recevez vos billets instantanément par e-mail avec QR code sécurisé.</p>
+        </div>
+
+        <div class="footer-column">
+            <i class="fa-solid fa-headset"></i>
+            <h4>Support client</h4>
+            <p>Notre équipe est disponible 7j/7 pour vous aider par e-mail ou téléphone.</p>
         </div>
     </div>
 </footer>
+
+
+
+
 
 </body>
 </html>

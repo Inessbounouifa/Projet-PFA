@@ -3,9 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>Mon Panier</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Montserrat', sans-serif;
             background-color: #fff0f5;
             margin: 0;
             padding-top: 100px;
@@ -31,9 +37,12 @@
             align-items: center;
         }
 
-        .logo-area .logo {
+        .logo {
             display: flex;
             align-items: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #880e4f;
             text-decoration: none;
         }
 
@@ -44,9 +53,9 @@
         }
 
         .logo span {
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Great Vibes', cursive;
             font-weight: 600;
-            font-size: 1.5rem;
+            font-size: 2rem;
             color: #880e4f;
         }
 
@@ -74,57 +83,73 @@
             color: #ad1457;
         }
 
-
         .container {
-            max-width: 800px;
+            max-width: 1100px;
             background: white;
             margin: 40px auto;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
         }
 
         h1 {
             color: #c2185b;
             text-align: center;
+            margin-bottom: 40px;
+            font-family: 'Cinzel Decorative', cursive;
+            font-size: 2.5rem;
         }
 
-        .item {
-            border-bottom: 1px solid #ccc;
+        .cart-header, .cart-item {
+            display: grid;
+            grid-template-columns: 1fr 100px 100px 80px;
+            align-items: center;
+            gap: 20px;
+            border-bottom: 1px solid #eee;
             padding: 20px 0;
         }
 
-        .item:last-child {
-            border-bottom: none;
-        }
-
-        .item h2 {
+        .cart-header {
+            font-weight: bold;
+            border-bottom: 2px solid #ccc;
             color: #880e4f;
-            margin: 0;
         }
 
-        .item p {
-            margin: 5px 0;
+        .cart-item h2 {
+            margin: 0;
+            font-size: 1.2rem;
+            color: #880e4f;
+        }
+
+        .cart-item p {
+            margin: 0;
+            font-size: 0.95rem;
+            color: #555;
         }
 
         .remove-button {
             background: none;
             border: none;
-            color: red;
-            font-size: 16px;
+            color: #dc3545;
+            font-size: 1.2rem;
             cursor: pointer;
+        }
+
+        .remove-button:hover {
+            color: #b52a38;
         }
 
         .checkout-button {
             background-color: #f48fb1;
             color: white;
             border: none;
-            padding: 12px;
-            margin-top: 20px;
+            padding: 16px;
+            margin-top: 30px;
             width: 100%;
-            font-size: 1rem;
+            font-size: 1.2rem;
             border-radius: 30px;
             cursor: pointer;
+            font-weight: bold;
         }
 
         .checkout-button:hover {
@@ -134,86 +159,149 @@
         a.return {
             display: block;
             text-align: center;
-            margin-top: 20px;
+            margin-top: 30px;
             color: #d81b60;
             text-decoration: none;
+            font-weight: 600;
         }
 
         a.return:hover {
             text-decoration: underline;
         }
+
+        .recommendations {
+            margin-top: 60px;
+        }
+
+        .recommendations h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: #8b1c47;
+            text-align: center;
+        }
+
+        .swiper-container {
+            padding: 0 20px 40px;
+        }
+
+        .swiper-slide {
+            background: #fff5fa;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            padding: 20px;
+            width: 220px;
+        }
+
+        .swiper-slide img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .swiper-slide h3 {
+            font-size: 1.1rem;
+            color: #d81b60;
+            margin-bottom: 8px;
+        }
+
+        .swiper-slide p {
+            font-size: 0.9rem;
+            color: #777;
+        }
     </style>
 </head>
 <body>
-
-<!-- ✅ Navbar USER -->
 <nav class="navbar">
     <div class="navbar-container">
-        <!-- Logo + texte -->
         <div class="logo-area">
             <a href="/" class="logo">
                 <img src="/images/billet.png" alt="Logo" class="logo-icon">
-                <span>GestionBillets</span>
+                <span>EventPass</span>
             </a>
         </div>
-
-        <!-- Liens à droite -->
         <ul class="nav-links">
             <li><a th:href="@{/}">Accueil</a></li>
-            <li><a th:href="@{/events/public}">Événements</a></li>
-
-            <li th:if="${#authorization.expression('hasRole(''USER'') and !hasRole(''ADMIN'')')}">
-                <a th:href="@{/cart/view}">Panier</a>
-            </li>
-
-            <li th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
-                <a th:href="@{/events/admin}">Gérer les événements</a>
-            </li>
-
-            <li th:if="${not #authorization.expression('isAuthenticated()')}">
-                <a th:href="@{/events/login}">Connexion</a>
-            </li>
-            <li th:if="${not #authorization.expression('isAuthenticated()')}">
-                <a th:href="@{/register}">Inscription</a>
-            </li>
-
+            <li th:if="${#authorization.expression('hasRole(''USER'') and !hasRole(''ADMIN'')')}"><a th:href="@{/events/public}">Événements</a></li>
+            <li th:if="${#authorization.expression('hasRole(''USER'') and !hasRole(''ADMIN'')')}"><a th:href="@{/cart/view}">Panier</a></li>
+            <li th:if="${#authorization.expression('hasRole(''ADMIN'')')}"><a th:href="@{/events/admin}">Gérer les événements</a></li>
+            <li th:if="${not #authorization.expression('isAuthenticated()')}"><a th:href="@{/events/login}">Connexion</a></li>
+            <li th:if="${not #authorization.expression('isAuthenticated()')}"><a th:href="@{/register}">Inscription</a></li>
             <li th:if="${#authorization.expression('isAuthenticated()')}">
                 <form th:action="@{/logout}" method="post" style="display: inline;">
-                    <button type="submit"
-                            style="background: none; border: none; padding: 0; font: inherit; color: #6a1b3f; cursor: pointer;">
-                        Déconnexion
-                    </button>
+                    <button type="submit" style="background: none; border: none; padding: 0; font: inherit; color: #6a1b3f; cursor: pointer;">Déconnexion</button>
                 </form>
             </li>
         </ul>
     </div>
 </nav>
 
-
 <div class="container">
-    <h1>Mon Panier</h1>
+    <h1>🛒 Mon Panier</h1>
 
     <div th:if="${#lists.isEmpty(cart)}">
-        <p>Votre panier est vide.</p>
+        <p style="text-align:center; color:#999">Votre panier est vide.</p>
     </div>
 
-    <div th:each="item, iterStat : ${cart}" class="item">
-        <h2 th:text="${item[0].title}">Titre</h2>
-        <p th:text="${item[0].description}">Description</p>
-        <p><strong>Prix :</strong> <span th:text="${item[0].prix}">0</span> MAD</p>
-        <p><strong>Quantité :</strong> <span th:text="${item[1]}">1</span></p>
+    <div class="cart-header" th:if="${not #lists.isEmpty(cart)}">
+        <div>Événement</div>
+        <div>Prix</div>
+        <div>Quantité</div>
+        <div></div>
+    </div>
 
+    <div th:each="item, iterStat : ${cart}" class="cart-item">
+        <div>
+            <h2 th:text="${item[0].title}">Titre</h2>
+            <p th:text="${item[0].description}">Description</p>
+        </div>
+        <div><span th:text="${item[0].prix} + ' MAD'">0 MAD</span></div>
+        <div><span th:text="${item[1]}">1</span></div>
         <form th:action="@{'/cart/remove/' + ${iterStat.index}}" method="get">
-            <button class="remove-button" type="submit">🗑 Supprimer</button>
+            <button class="remove-button" type="submit" title="Supprimer"><i class="fa-solid fa-trash"></i></button>
         </form>
     </div>
 
     <form th:action="@{/payment}" method="get">
-        <button type="submit" class="checkout-button">Valider la commande</button>
+        <button type="submit" class="checkout-button">✅ Valider la commande</button>
     </form>
 
     <a th:href="@{/}" class="return">← Continuer les achats</a>
+
+    <!-- 🎀 Recommandations avec swiper -->
+    <div class="recommendations">
+        <h2>Vous aimerez peut-être aussi</h2>
+
+        <div class="swiper swiper-container">
+            <div class="swiper-wrapper">
+                <div th:each="event : ${suggestions}" class="swiper-slide">
+                    <img th:src="@{'/images/' + ${event.image}}" alt="Event image">
+                    <h3 th:text="${event.title}">Nom Événement</h3>
+                    <p th:text="${event.venue}">Lieu</p>
+                </div>
+            </div>
+            <div class="swiper-pagination"></div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
+        </div>
+    </div>
+
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+<script>
+    const swiper = new Swiper('.swiper', {
+        slidesPerView: 3,
+        spaceBetween: 30,
+        loop: true,
+        autoplay: { delay: 2500 },
+        pagination: { el: '.swiper-pagination', clickable: true },
+        navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' }
+    });
+</script>
 
 </body>
 </html>

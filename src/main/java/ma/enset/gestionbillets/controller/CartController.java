@@ -35,8 +35,14 @@ public class CartController {
         List<Object[]> cart = (List<Object[]>) session.getAttribute("cart");
         if (cart == null) cart = new ArrayList<>();
         model.addAttribute("cart", cart);
+
+        // Ajouter les suggestions d'événements
+        List<Event> suggestions = eventRepository.findTop5ByOrderByDateTimeAsc();
+        model.addAttribute("suggestions", suggestions);
+
         return "events/view";
     }
+
 
     @GetMapping("/remove/{index}")
     public String removeFromCart(@PathVariable int index, HttpSession session) {
@@ -47,4 +53,5 @@ public class CartController {
         session.setAttribute("cart", cart);
         return "redirect:/cart/view";
     }
+
 }
